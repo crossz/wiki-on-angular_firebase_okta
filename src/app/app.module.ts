@@ -15,6 +15,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { HomeComponent } from './home/home.component';
 
 import { MarkdownModule } from 'ngx-markdown';
+import { EditComponent } from './edit/edit.component';
 
 
 const firebaseConfig = {
@@ -31,6 +32,7 @@ const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule,
