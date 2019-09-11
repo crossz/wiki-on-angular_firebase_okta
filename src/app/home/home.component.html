@@ -1,0 +1,17 @@
+<!-- <div>
+    <button *ngIf="!isAuthenticated" (click)="oktaAuth.loginRedirect()">Login</button>
+    <button *ngIf="isAuthenticated" (click)="oktaAuth.logout()">Logout</button>
+</div> -->
+
+<div class="grid-container wiki">
+    <div class="grid-x">
+      <div class="small-12 cell">
+        <div class="manage-post" *ngIf="isAuthenticated">
+          <button class="button" [routerLink]="['/edit', slug]">Edit</button>
+          <button class="button" routerLink="/edit">Create</button>
+        </div>
+        {{content}}
+        <!-- <markdown [data]="content"></markdown> -->
+      </div>
+    </div>
+  </div>

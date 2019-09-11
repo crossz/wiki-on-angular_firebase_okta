@@ -1,5 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<!-- <div style="text-align:center">
   <h1>
     Welcome to {{ title }}!
   </h1>
@@ -18,4 +18,18 @@
   </li>
 </ul>
 
+<router-outlet></router-outlet> -->
+
+
+
+
+<div class="top-bar">
+  <div class="top-bar-left">
+    <button routerLink="/">{{title}}</button>
+  </div>
+  <div class="top-bar-right">
+    <button class="button" *ngIf="!isAuthenticated" (click)="oktaAuth.loginRedirect()"> Login </button>
+    <button class="button" *ngIf="isAuthenticated" (click)="oktaAuth.logout()"> Logout </button>
+  </div>
+</div>
 <router-outlet></router-outlet>
