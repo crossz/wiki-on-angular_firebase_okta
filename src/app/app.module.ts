@@ -5,10 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 
+import { HomeModule} from './home/home.module';
+
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthRoutingModule } from './auth-routing.module';
+import { HomeComponent } from './home/home.component';
+
+import { MarkdownModule } from 'ngx-markdown';
 
 
 const firebaseConfig = {
@@ -24,7 +30,7 @@ const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +42,9 @@ const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AuthRoutingModule,
+    HomeModule,
+    MarkdownModule.forRoot()
+  
 
   ],
   providers: [],

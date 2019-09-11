@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OktaCallbackComponent } from '@okta/okta-angular';
-import { HomeComponent } from './home/home.component';
+// import { HomeComponent } from './home/home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { OKTA_CONFIG, OktaAuthModule } from '@okta/okta-angular';
 import { AuthInterceptor } from './shared/okta/auth.interceptor';
@@ -17,7 +17,8 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'home',
-    component: HomeComponent
+    // component: HomeComponent
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
   {
     path: 'implicit/callback',
@@ -27,7 +28,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    HomeComponent
+    // HomeComponent
   ],
   imports: [
     CommonModule,
