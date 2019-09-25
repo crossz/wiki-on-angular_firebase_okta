@@ -6,44 +6,33 @@ import { Subject }    from 'rxjs';
 })
 export class OktaAuthService {
 
-  constructor() { };
-
-  isAuthenticated(): boolean {
-
-
-    return true;
-  };
-
+  private authenticated: boolean;
   // Observable string sources
   private authenticationStateSource = new Subject<boolean>();
   $authenticationState = this.authenticationStateSource.asObservable();
+  
+  constructor() {
+    this.authenticated = false;
+  };
 
+  // Service message commands
+  announceMission(authenticated: boolean) {
+    this.authenticationStateSource.next(authenticated);
+  }
+
+
+  isAuthenticated() {
+    return this.authenticated;
+  };
 
   loginRedirect() {
-
+    this.announceMission(true);
+    // this.authenticated = true;
   }
-
-
+  
   logout() {
-    
+    this.announceMission(false);
+    // this.authenticated = false;
   }
-
-
-  // private missionAnnouncedSource = new Subject<string>();
-  // private missionConfirmedSource = new Subject<string>();
-
-  // // Observable string streams
-  // missionAnnounced$ = this.missionAnnouncedSource.asObservable();
-  // missionConfirmed$ = this.missionConfirmedSource.asObservable();
-
-  // // Service message commands
-  // announceMission(mission: string) {
-  //   this.missionAnnouncedSource.next(mission);
-  // }
-
-  // confirmMission(astronaut: string) {
-  //   this.missionConfirmedSource.next(astronaut);
-  // }
-
 
 }
