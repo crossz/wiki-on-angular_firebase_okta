@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { OktaAuthService } from '@okta/okta-angular';
-
+// import { OktaAuthService } from '@okta/okta-angular';
+import { OktaAuthService } from './services/okta-auth.service';
 
 
 

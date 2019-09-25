@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OktaCallbackComponent } from '@okta/okta-angular';
+// import { OktaCallbackComponent } from '@okta/okta-angular';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { OKTA_CONFIG, OktaAuthModule } from '@okta/okta-angular';
-import { AuthInterceptor } from './shared/okta/auth.interceptor';
+// import { OKTA_CONFIG, OktaAuthModule } from '@okta/okta-angular';
+// import { AuthInterceptor } from './shared/okta/auth.interceptor';
 
 
 // import { HomeComponent } from './home/home.component';
@@ -28,10 +28,10 @@ const routes: Routes = [
     // component: HomeComponent
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
-  {
-    path: 'implicit/callback',
-    component: OktaCallbackComponent
-  }
+  // {
+  //   path: 'implicit/callback',
+  //   component: OktaCallbackComponent
+  // }
 ];
 
 @NgModule({
@@ -41,12 +41,12 @@ const routes: Routes = [
   imports: [
     CommonModule,
     HttpClientModule,
-    OktaAuthModule,
+    // OktaAuthModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
-    { provide: OKTA_CONFIG, useValue: oktaConfig },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    // { provide: OKTA_CONFIG, useValue: oktaConfig },
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   exports: [RouterModule]
 })
