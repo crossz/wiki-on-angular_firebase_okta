@@ -10,11 +10,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 // import { HomeComponent } from './home/home.component';
 
 
-const oktaConfig = {
-  issuer: 'https://dev-892069.okta.com',
-  redirectUri: window.location.origin + '/implicit/callback',
-  clientId: '0oa1bhabb0CprTdyq357'
-};
+// const oktaConfig = {
+//   issuer: 'https://dev-892069.okta.com',
+//   redirectUri: window.location.origin + '/implicit/callback',
+//   clientId: '0oa1bhabb0CprTdyq357'
+// };
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },

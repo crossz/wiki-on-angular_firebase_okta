@@ -25,8 +25,9 @@ export class OktaAuthService {
     this.authenticationStateSource.next(authenticated);
   }
 
-
+    // OKTA using localStorage to store the local and remote tokens, this is from their official github README.md.
     // /** OKTA source code on github: https://github.com/okta/okta-oidc-js/blob/master/packages/okta-angular/src/okta/services/okta.service.ts
+    // 
     //  * Checks if there is an access token and id token
     //  */
     // async isAuthenticated(): Promise<boolean> {

@@ -18,6 +18,9 @@ import { MarkdownModule } from 'ngx-markdown';
 import { EditComponent } from './edit/edit.component';
 
 
+import { OktaAuthService } from './services/okta-auth.service';
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyA8uDBiuKh6xDfBVV4ZM6ZdIx2Tf28_2lw",
   authDomain: "myngwiki.firebaseapp.com",
@@ -49,7 +52,9 @@ const firebaseConfig = {
   
 
   ],
-  providers: [],
+  // this is to make these services singleton, so the variables shared between parent and children components could be persisted except refreshing the SPA. In the cose of persisting during refreshing pages, localStorage etc have to be implemented.
+  providers: [OktaAuthService], 
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }
