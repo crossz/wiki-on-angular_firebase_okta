@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+
 // import { OktaAuthService } from '@okta/okta-angular';
 import { OktaAuthService } from '../services/okta-auth.service';
 
+// import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '../services/gwa-store.service';
+
+
 import { ActivatedRoute } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
-import { DocumentSnapshot } from '@firebase/firestore-types';
+// import { DocumentSnapshot } from '@firebase/firestore-types';
 
 @Component({
   selector: 'app-home',

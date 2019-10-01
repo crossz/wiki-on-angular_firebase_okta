@@ -29,8 +29,11 @@ const firebaseConfig = {
   storageBucket: "myngwiki.appspot.com",
   messagingSenderId: "22899147088",
   appId: "1:22899147088:web:1ef707ccc0cb455bac6c55"
+  ,
+  'PRIVATE-TOKEN': "zx8Z3TR3BtapdzvWG_eA"
+  ,
+  PRIVATETOKEN: "zx8Z3TR3BtapdzvWG_eA"
 };
-
 
 @NgModule({
   declarations: [
