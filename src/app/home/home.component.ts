@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
       this.subs.unsubscribe();
     }
 
+    // const doc = this.db.collection('pages').doc(slug).get();
     const doc = this.db.collection('pages').doc(slug).get();
 
     /**

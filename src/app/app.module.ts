@@ -9,11 +9,16 @@ import { HomeModule} from './home/home.module';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AuthRoutingModule } from './auth-routing.module';
-import { HomeComponent } from './home/home.component';
 
+
+// import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from './modules/gwa-module/gwa-module.module';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
+
+import { AuthRoutingModule } from './auth-routing.module';
+
+import { HomeComponent } from './home/home.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { EditComponent } from './edit/edit.component';
 
@@ -32,12 +37,14 @@ const firebaseConfig = {
   ,
   'PRIVATE-TOKEN': "zx8Z3TR3BtapdzvWG_eA"
   ,
-  PRIVATETOKEN: "zx8Z3TR3BtapdzvWG_eA"
+  PRIVATETOKEN: "zx8Z3TR3BtapdzvWG_eA",
+  GITLABAPIURL: "https://gitlab.com/api/v4"
 };
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     EditComponent,
   ],
   imports: [
