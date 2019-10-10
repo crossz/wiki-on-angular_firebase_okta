@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { from, Observable, observable, Timestamp } from 'rxjs';
+
+
+import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AngularFirestore {
   _collection: WikiPagesCollection;
+  _config: any;
 
-
-  constructor() { }
+  constructor(@Inject(FirebaseOptionsToken) fbConfig: any) {
+    this._config = fbConfig;
+   }
 
   /**
    * For the Gitlab Wiki Api:
@@ -26,7 +32,8 @@ export class AngularFirestore {
 
 
 
-
+      // console.log(firebaseConfig.PRIVATETOKEN);
+      console.log(this._config.PRIVATETOKEN);
 
 
       

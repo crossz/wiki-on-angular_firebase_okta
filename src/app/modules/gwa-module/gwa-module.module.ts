@@ -2,9 +2,9 @@ import { NgModule, InjectionToken } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 
-export declare type FirebaseOptions = {
-  [key: string]: any;
-};
+// export declare type FirebaseOptions = {
+//   [key: string]: any;
+// };
 
 export var FirebaseOptionsToken = new InjectionToken('angularfire2.app.options')
 
@@ -24,10 +24,11 @@ export class AngularFireModule {
   //   }[];
   // };
 
-  
+  static AngularFireModule_1: any = AngularFireModule;
+
   static initializeApp(options) {
     return {
-        ngModule: AngularFireModule,
+        ngModule: this.AngularFireModule_1,
         providers: [
             { provide: FirebaseOptionsToken, useValue: options },
             // { provide: FirebaseNameOrConfigToken, useValue: nameOrConfig }

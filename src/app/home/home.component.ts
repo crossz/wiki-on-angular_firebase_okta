@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 // import { OktaAuthService } from '@okta/okta-angular';
 import { OktaAuthService } from '../services/okta-auth.service';
 
-// import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFirestore } from '../services/gwa-store.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+// import { AngularFirestore } from '../services/gwa-store.service';
 
 
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
 // import { DocumentSnapshot } from '@firebase/firestore-types';
 
 @Component({
@@ -25,9 +26,16 @@ export class HomeComponent implements OnInit {
 
   subs: Subscription;
 
+
+  _config: any;
+
+
   constructor(private oktaAuth: OktaAuthService,
               private db: AngularFirestore,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              @Inject(FirebaseOptionsToken) fbConfig: any
+              ) {
+                this._config = fbConfig;
   }
 
   async ngOnInit() {
@@ -42,6 +50,12 @@ export class HomeComponent implements OnInit {
   }
 
   loadPage(slug) {
+
+
+    console.log(this._config);
+
+
+
     if (this.subs) {
       this.subs.unsubscribe();
     }
