@@ -1,15 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 // import { OktaAuthService } from '@okta/okta-angular';
 import { OktaAuthService } from '../services/okta-auth.service';
 
-import { AngularFirestore } from '@angular/fire/firestore';
-// import { AngularFirestore } from '../services/gwa-store.service';
 
-
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+// import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '../services/gwa-store.service';
 import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
+
 // import { DocumentSnapshot } from '@firebase/firestore-types';
 
 @Component({
@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
   loadPage(slug) {
 
 
+    console.log('----==== _config: ====----');
     console.log(this._config);
 
 
@@ -77,7 +78,15 @@ export class HomeComponent implements OnInit {
     //   return from(this.ref.get(options)).pipe(runInZone(this.afs.scheduler.zone));
     // };
 
+
+
+
+
+
+
+    
     this.subs = doc.subscribe((snapshot) => {
+      console.log('----==== snaphot: ' + snapshot);
       const page = snapshot.data();
       if (!page) {
         this.content = '### This page does not exist';
@@ -90,5 +99,7 @@ export class HomeComponent implements OnInit {
         console.log(page);
       }
     });
+
+
   }
 }

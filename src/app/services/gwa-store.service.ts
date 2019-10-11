@@ -28,12 +28,19 @@ export class AngularFirestore {
    */
   collection(path: string, queryFn?: any) {
 
+
+
+    this._collection = new WikiPagesCollection();
+
+
+
+
     if (queryFn ===null || queryFn === 'GET') {
 
 
 
       // console.log(firebaseConfig.PRIVATETOKEN);
-      console.log(this._config.PRIVATETOKEN);
+      console.log('------=========== PRIVATETOKEN: ' + this._config.PRIVATETOKEN);
 
 
       
@@ -56,7 +63,7 @@ zhengxin@zhengxindeiMac  ~  curl --request GET --header "PRIVATE-TOKEN: zx
  * 
  */
 class WikiPagesCollection {
-  _document: WikiPagesDocument;
+  _document: WikiPagesDocument = new WikiPagesDocument();
 
   constructor() { }
 
@@ -74,7 +81,7 @@ class WikiPagesCollection {
  * 
  */
 class WikiPagesDocument {
-  _snapshotObs: WikiPagesSnapshotObservable;
+  _snapshotObs: WikiPagesSnapshotObservable = new WikiPagesSnapshotObservable();
 
   constructor() { }
 

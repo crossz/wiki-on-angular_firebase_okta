@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { HomeComponent } from './home.component';
 import { AngularFireModule } from '../modules/gwa-module/gwa-module.module';
+import { AngularFirestore } from '../services/gwa-store.service';
 
 
 const firebaseConfig = {
@@ -23,5 +24,6 @@ const firebaseConfig = {
    MarkdownModule.forChild(),
    RouterModule.forChild([{ path: '', component: HomeComponent }])
   ],
+  providers: [AngularFirestore]
 })
 export class HomeModule {}
