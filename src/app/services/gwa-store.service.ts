@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { from, Observable, observable, Timestamp } from 'rxjs';
+import { from, Observable, observable, Timestamp, of } from 'rxjs';
 
 
 import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
@@ -85,12 +85,26 @@ class WikiPagesDocument {
 
   constructor() { }
 
+  // Observable are returned.
   get(){
+
+
+    var mocked = [
+      new WikiPagesSnapshotMap('aaa'),
+      new WikiPagesSnapshotMap('bbb'),
+    ]
+
+    this._snapshotObs = from(mocked);
+
 
     // return new Observable();
     return this._snapshotObs;
   }
 
+  // Observable are NOT here, while only for get()
+  set() {
+
+  }
 
 }
 
@@ -100,7 +114,6 @@ class WikiPagesDocument {
  * 
  */
 class WikiPagesSnapshotObservable extends Observable<WikiPagesSnapshotMap> {
-  _snapshot: WikiPagesSnapshotMap;
 
   constructor() {
     super();
@@ -110,15 +123,28 @@ class WikiPagesSnapshotObservable extends Observable<WikiPagesSnapshotMap> {
 
 
 /**
- * 
+ * One Snapshot is one page container.
  * 
  */
 class WikiPagesSnapshotMap {
   _page: WikiPagesPageMap;
+  slug: string;
 
-  constructor() { }
+  /**
+   * 
+   * @param slug 
+   * @param title 
+   * @param created 
+   * @param modified 
+   */
+  constructor(slug) {
+    this.slug = slug;
+  }
 
   data () {
+    let pageMap = new WikiPagesPageMap(this.slug);
+    pageMap.getdata();
+    this._page = pageMap;
     return this._page;
   }
 
@@ -134,7 +160,6 @@ class WikiPagesPageMap {
 
   created: number;
   modified: number;
-
 
   /**
    * 
@@ -170,7 +195,30 @@ class WikiPagesPageMap {
   link: {url: string; markdown: string};
 
 
-  constructor() { }
+  /**
+   * some variables which are not for returning pages' data.
+  */
 
+
+  /**
+   * 
+   * @param slug 
+   * @param title 
+   * @param created 
+   * @param modified 
+   */
+  constructor(slug, title?, created?, modified?) {
+    this.slug = slug;
+    if (title!=null) {this.title = title };
+    if (created!=null) {this.created = created };
+    if (modified!=null) {this.modified = modified };
+
+  }
+
+  // TODO: retrieve data.
+  getdata() {
+    let content_mocked = this.slug + this.slug;
+    this.content = content_mocked;
+  }
 
 }

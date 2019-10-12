@@ -86,8 +86,9 @@ export class HomeComponent implements OnInit {
 
     
     this.subs = doc.subscribe((snapshot) => {
-      console.log('----==== snaphot: ' + snapshot);
+      console.log('----==== snaphot: ' + snapshot.slug);
       const page = snapshot.data();
+      console.log('----==== page: ' + page.content);
       if (!page) {
         this.content = '### This page does not exist';
         this.slug = undefined;
