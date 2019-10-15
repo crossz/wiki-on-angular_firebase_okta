@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { from, Observable, observable, Timestamp, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
@@ -9,12 +10,19 @@ import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
   providedIn: 'root'
 })
 export class AngularFirestore {
-  _collection: WikiPagesCollection;
   _config: any;
+  _collection: WikiPagesCollection;
+  
 
-  constructor(@Inject(FirebaseOptionsToken) fbConfig: any) {
+  constructor(@Inject(FirebaseOptionsToken) fbConfig: any,
+              // private http: HttpClient
+              ) {
     this._config = fbConfig;
    }
+
+  initCollection(path: string) {
+    this._collection = new WikiPagesCollection(path);
+  }
 
   /**
    * For the Gitlab Wiki Api:
@@ -27,23 +35,13 @@ export class AngularFirestore {
    * curl --request GET --header "PRIVATE-TOKEN: zx8Z3TR3BtapdzvWG_eA" "https://gitlab.com/api/v4/projects/3224459/wikis"
    */
   collection(path: string, queryFn?: any) {
+    this.initCollection(path);
+
+    if (queryFn === '' || queryFn === 'GET') {
+      console.log('----====----==== PRIVATETOKEN in AngularFirestore.collection(): ' + this._config.PRIVATETOKEN);
 
 
-
-    this._collection = new WikiPagesCollection();
-
-
-
-
-    if (queryFn ===null || queryFn === 'GET') {
-
-
-
-      // console.log(firebaseConfig.PRIVATETOKEN);
-      console.log('------=========== PRIVATETOKEN: ' + this._config.PRIVATETOKEN);
-
-
-      
+      this._collection.setPrivateToken(this._config.PRIVATETOKEN);
     }
     return this._collection;
   }
@@ -63,13 +61,33 @@ zhengxin@zhengxindeiMac  ~  curl --request GET --header "PRIVATE-TOKEN: zx
  * 
  */
 class WikiPagesCollection {
-  _document: WikiPagesDocument = new WikiPagesDocument();
+  _document: WikiPagesDocument;
+  _privatetoken: string;
+  _collectiionId: string;
+  
+  constructor(path: string) {
+    this._collectiionId = path;
+  }
 
-  constructor() { }
+  initDocument(path: string) {
+    this._document = new WikiPagesDocument(path);
+  }
+
+  setPrivateToken(privateToken: string) {
+    this._privatetoken = privateToken;
+  }
+  
 
   // doc<T>(path: string): AngularFirestoreDocument<T>;
   doc(path: string) {
-    
+    console.log('----====----==== _privatetoken in WikiPagesCollection.doc(): ' + this._privatetoken);
+    console.log('----====----==== _collectiionId in WikiPagesCollection.doc(): ' + this._collectiionId);
+
+
+    this.initDocument(path);
+    this._document.setPrivateToken(this._privatetoken);
+    this._document.setCollectiionId(this._collectiionId);
+
     return this._document;
     }
 
@@ -77,24 +95,67 @@ class WikiPagesCollection {
 
 
 /**
- * 
+ * Document.get() will yield Observable, which is converted from promise returned from gitlab wiki api.
  * 
  */
 class WikiPagesDocument {
   _snapshotObs: WikiPagesSnapshotObservable = new WikiPagesSnapshotObservable();
+  _privatetoken: string;
+  _collectiionId: string;
+  _slug: string;
 
-  constructor() { }
+  private http: HttpClient;
+
+  constructor(path: string) {
+    this._slug = path;
+  }
+   
+
+  setPrivateToken(privateToken: string) {
+    this._privatetoken = privateToken;
+  }
+
+  setCollectiionId(collectiionId: string) {
+    this._collectiionId = collectiionId;
+  }
 
   // Observable are returned.
   get(){
+    console.log('----====----==== _privatetoken in WikiPagesDocument.get(): ' + this._privatetoken);
+    console.log('----====----==== _collectiionId in WikiPagesDocument.get(): ' + this._collectiionId);
+    console.log('----====----==== _slug in WikiPagesDocument.get(): ' + this._slug);
+
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+     });
+
+     let rxUrl = 'https://gitlab.com/api/v4/projects/3224459/wikis/home?private_token=zx8Z3TR3BtapdzvWG_eA';
+
+    //  let headers = new HttpHeaders({
+    //   'Content-Type':  'application/json',
+    //   'Authorization': 'my-auth-token'
+    // })
+
+
+    // this.http.get(rxUrl, {headers})
+    // .toPromise()
+    // .then(res => res.json())
+    // .catch(err => {
+    //     return Promise.reject(err.json().error  || 'Server error');
+    // });
+
 
 
     var mocked = [
       new WikiPagesSnapshotMap('aaa'),
-      new WikiPagesSnapshotMap('bbb'),
+      // new WikiPagesSnapshotMap('bbb'),
     ]
 
     this._snapshotObs = from(mocked);
+
+
+
 
 
     // return new Observable();
@@ -123,7 +184,8 @@ class WikiPagesSnapshotObservable extends Observable<WikiPagesSnapshotMap> {
 
 
 /**
- * One Snapshot is one page container.
+ * Snapshot is the element from the rxjs observable variable, i.e. WikiPagesSnapshotMap.
+ * One Snapshot is one page container, and it could include other variables such as http header etc.
  * 
  */
 class WikiPagesSnapshotMap {
@@ -215,7 +277,10 @@ class WikiPagesPageMap {
 
   }
 
-  // TODO: retrieve data.
+  /**
+   * TODO: retrieve data from the observable (converted from promise returned by gitlab wiki api).
+   * This getadata() do NOT any actions related to remote connection, while only deal with the snaphot type of variable.
+  */ 
   getdata() {
     let content_mocked = this.slug + this.slug;
     this.content = content_mocked;

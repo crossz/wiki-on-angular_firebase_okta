@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
   loadPage(slug) {
 
 
-    console.log('----==== _config: ====----');
+    console.log('----==== _config: ');
     console.log(this._config);
 
 
