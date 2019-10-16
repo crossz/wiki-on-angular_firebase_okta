@@ -6,22 +6,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class AngularFirestore {
   _config: any;
   _collection: WikiPagesCollection;
+  _document: WikiPagesDocument;
   
 
   constructor(@Inject(FirebaseOptionsToken) fbConfig: any,
-              // private http: HttpClient
+              private http: HttpClient
               ) {
     this._config = fbConfig;
    }
 
   initCollection(path: string) {
     this._collection = new WikiPagesCollection(path);
+    this._document = new WikiPagesDocument(this.http);
   }
 
   /**
@@ -37,11 +40,16 @@ export class AngularFirestore {
   collection(path: string, queryFn?: any) {
     this.initCollection(path);
 
-    if (queryFn === '' || queryFn === 'GET') {
+    if (!queryFn || queryFn === 'GET') {
       console.log('----====----==== PRIVATETOKEN in AngularFirestore.collection(): ' + this._config.PRIVATETOKEN);
 
 
       this._collection.setPrivateToken(this._config.PRIVATETOKEN);
+      this._collection.setDocument(this._document);
+
+      this._document.setPrivateToken(this._config.PRIVATETOKEN);
+      this._document.setCollectiionId(path);
+      
     }
     return this._collection;
   }
@@ -69,28 +77,27 @@ class WikiPagesCollection {
     this._collectiionId = path;
   }
 
-  initDocument(path: string) {
-    this._document = new WikiPagesDocument(path);
+  initDocument() {
+    // this._document = 
+  }
+
+  setDocument(document: WikiPagesDocument) {
+    this._document = document;
   }
 
   setPrivateToken(privateToken: string) {
     this._privatetoken = privateToken;
   }
-  
 
   // doc<T>(path: string): AngularFirestoreDocument<T>;
   doc(path: string) {
     console.log('----====----==== _privatetoken in WikiPagesCollection.doc(): ' + this._privatetoken);
     console.log('----====----==== _collectiionId in WikiPagesCollection.doc(): ' + this._collectiionId);
 
-
-    this.initDocument(path);
-    this._document.setPrivateToken(this._privatetoken);
-    this._document.setCollectiionId(this._collectiionId);
+    this._document.setSlug(path);
 
     return this._document;
     }
-
 }
 
 
@@ -98,18 +105,14 @@ class WikiPagesCollection {
  * Document.get() will yield Observable, which is converted from promise returned from gitlab wiki api.
  * 
  */
-class WikiPagesDocument {
+ class WikiPagesDocument {
   _snapshotObs: WikiPagesSnapshotObservable = new WikiPagesSnapshotObservable();
   _privatetoken: string;
   _collectiionId: string;
   _slug: string;
 
-  private http: HttpClient;
-
-  constructor(path: string) {
-    this._slug = path;
+  constructor(private http: HttpClient) {
   }
-   
 
   setPrivateToken(privateToken: string) {
     this._privatetoken = privateToken;
@@ -119,11 +122,18 @@ class WikiPagesDocument {
     this._collectiionId = collectiionId;
   }
 
+  setSlug(slug: string) {
+    this._slug = slug;
+  }
+
   // Observable are returned.
   get(){
     console.log('----====----==== _privatetoken in WikiPagesDocument.get(): ' + this._privatetoken);
     console.log('----====----==== _collectiionId in WikiPagesDocument.get(): ' + this._collectiionId);
     console.log('----====----==== _slug in WikiPagesDocument.get(): ' + this._slug);
+
+
+
 
 
     let headers = new HttpHeaders({
@@ -138,13 +148,16 @@ class WikiPagesDocument {
     // })
 
 
-    // this.http.get(rxUrl, {headers})
+    this.http.get(rxUrl, {headers}).subscribe(_ => console.log('dddddddddddddddddddddddddddd'))
     // .toPromise()
     // .then(res => res.json())
     // .catch(err => {
     //     return Promise.reject(err.json().error  || 'Server error');
     // });
 
+
+
+    
 
 
     var mocked = [
