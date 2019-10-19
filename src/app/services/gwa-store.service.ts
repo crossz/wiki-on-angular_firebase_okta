@@ -1,10 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import { from, Observable, observable, Timestamp, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
-
 
 
 @Injectable({
@@ -43,13 +42,9 @@ export class AngularFirestore {
     if (!queryFn || queryFn === 'GET') {
       console.log('----====----==== PRIVATETOKEN in AngularFirestore.collection(): ' + this._config.PRIVATETOKEN);
 
-
       this._collection.setPrivateToken(this._config.PRIVATETOKEN);
+      this._collection.setGitlabApiUrl(this._config.GITLABAPIURL);
       this._collection.setDocument(this._document);
-
-      this._document.setPrivateToken(this._config.PRIVATETOKEN);
-      this._document.setCollectiionId(path);
-      
     }
     return this._collection;
   }
@@ -69,16 +64,14 @@ zhengxin@zhengxindeiMac  ~  curl --request GET --header "PRIVATE-TOKEN: zx
  * 
  */
 class WikiPagesCollection {
+  _collectiionId: string;
   _document: WikiPagesDocument;
   _privatetoken: string;
-  _collectiionId: string;
+  _gitlabapiurl: string;
+  
   
   constructor(path: string) {
     this._collectiionId = path;
-  }
-
-  initDocument() {
-    // this._document = 
   }
 
   setDocument(document: WikiPagesDocument) {
@@ -89,13 +82,19 @@ class WikiPagesCollection {
     this._privatetoken = privateToken;
   }
 
+  setGitlabApiUrl(gitlabApiUrl: string) {
+    this._gitlabapiurl = gitlabApiUrl;
+  }
+
   // doc<T>(path: string): AngularFirestoreDocument<T>;
   doc(path: string) {
     console.log('----====----==== _privatetoken in WikiPagesCollection.doc(): ' + this._privatetoken);
     console.log('----====----==== _collectiionId in WikiPagesCollection.doc(): ' + this._collectiionId);
 
     this._document.setSlug(path);
-
+    this._document.setPrivateToken(this._privatetoken);
+    this._document.setCollectiionId(this._collectiionId);
+    this._document.setGitlabApiUrl(this._gitlabapiurl);
     return this._document;
     }
 }
@@ -106,8 +105,9 @@ class WikiPagesCollection {
  * 
  */
  class WikiPagesDocument {
-  _snapshotObs: WikiPagesSnapshotObservable = new WikiPagesSnapshotObservable();
+  _snapshotObs: WikiPagesSnapshotObservable;// = new WikiPagesSnapshotObservable();
   _privatetoken: string;
+  _gitlabapiurl: string;
   _collectiionId: string;
   _slug: string;
 
@@ -116,6 +116,10 @@ class WikiPagesCollection {
 
   setPrivateToken(privateToken: string) {
     this._privatetoken = privateToken;
+  }
+
+  setGitlabApiUrl(gitlabApiUrl: string) {
+    this._gitlabapiurl = gitlabApiUrl;
   }
 
   setCollectiionId(collectiionId: string) {
@@ -133,51 +137,109 @@ class WikiPagesCollection {
     console.log('----====----==== _slug in WikiPagesDocument.get(): ' + this._slug);
 
 
-
-
-
     let headers = new HttpHeaders({
-      'Content-type': 'application/json',
+      'Content-type': 'application/json',      
      });
 
-     let rxUrl = 'https://gitlab.com/api/v4/projects/3224459/wikis/home?private_token=zx8Z3TR3BtapdzvWG_eA';
+    //  let rxUrl = 'https://gitlab.com/api/v4/projects/3224459/wikis/home?private_token=zx8Z3TR3BtapdzvWG_eA';
+     let rxUrl = this._gitlabapiurl + this._collectiionId + '/wikis/' + this._slug + '?private_token=' + this._privatetoken;
 
-    //  let headers = new HttpHeaders({
-    //   'Content-Type':  'application/json',
-    //   'Authorization': 'my-auth-token'
-    // })
+    /**
+     * here the response in rx is: {format: "markdown", slug: "home", title: "home", content: "home content.↵↵## subtitle 1↵content 1.↵↵## aaa↵aaa"}
+     */
+    // var httpgetresp$ = this.http.get(rxUrl, {headers, observe: 'response'}) // response.body for the Wiki Pages as json.
+    // var httpgetresp$ = this.http.get(rxUrl, {headers, responseType: 'json'}) // response for the Wiki Pages as json.
+  //  .subscribe(resp => {console.log(resp.body);}) // for mode of {observe: 'response'}
+  //  .subscribe(resp => {console.log(resp);}) // for mode of simplest
+  
+
+    var httpgetresp$ = this.http.get<WikiPagesSnapshotMap>(rxUrl, {headers, observe: 'response'}) // response.body for the Wiki Pages as json.
+
+    /**
+     * the observable operators/operations transform Observable<Object> to WikiPagesSnapshotMap,
+     * so that the snaphot type will work(snapshot.data() will work).
+     */
+    // .pipe(pluck('body'));
+    .pipe(map(resp => {
+      // console.log(resp)
+      let _snapshotInObs = new WikiPagesSnapshotMap(resp);
+      return _snapshotInObs;})
+    )
+    
 
 
-    this.http.get(rxUrl, {headers}).subscribe(_ => console.log('dddddddddddddddddddddddddddd'))
-    // .toPromise()
-    // .then(res => res.json())
-    // .catch(err => {
-    //     return Promise.reject(err.json().error  || 'Server error');
-    // });
+    this._snapshotObs = httpgetresp$;
+    return this._snapshotObs;
 
+
+
+
+
+
+
+      // /**
+      //  * javascript body -> Map.
+      //  */
+      // let rb = resp.body;
+      // console.log(typeof rb === 'object');
+      // console.log(rb['format']);
+
+      // const xah_obj_to_map = ( obj => {
+      //   const mp = new Map;
+      //   Object.keys ( obj ). forEach (k => { mp.set(k, obj[k]) });
+      //   return mp;
+      // });
+      // console.log ( xah_obj_to_map ( rb ) );
+      // ///////////////////////////
+
+
+
+
+      // ar.push(new WikiPagesSnapshotMap(resp.body));
+      // console.log(ar.push('aaaa'));
+
+      // console.log(ar);
+      // console.log(ar[0]);
+  // })
+    // /**
+    //  * the following will not output anything because the http/observable are async, i.e. have some delay.
+    //  */ 
+    // console.log(ar);
+    // console.log(ar[0]);
 
 
     
 
-
-    var mocked = [
-      new WikiPagesSnapshotMap('aaa'),
-      // new WikiPagesSnapshotMap('bbb'),
-    ]
-
-    this._snapshotObs = from(mocked);
+    // console.log('----====----====----==== observable: ')
+    // console.log(aaa$);
 
 
 
 
 
-    // return new Observable();
-    return this._snapshotObs;
+
+    // var mocked = [
+    //   new WikiPagesSnapshotMap('aaa'),
+    //   new WikiPagesSnapshotMap('bbb'),
+    // ]
+    // this._snapshotObs = from(mocked);
+
+
+
+
+
+    // this._snapshotObs = httpgetresp$;
+
+
+
+
+    // // return new Observable();
+    // return this._snapshotObs;
   }
 
-  // Observable are NOT here, while only for get()
-  set() {
 
+  // TODO: Observable are NOT here, while only for get()
+  set() {
   }
 
 }
@@ -202,37 +264,27 @@ class WikiPagesSnapshotObservable extends Observable<WikiPagesSnapshotMap> {
  * 
  */
 class WikiPagesSnapshotMap {
+  _resp: HttpResponse<Object>;
   _page: WikiPagesPageMap;
-  slug: string;
-
-  /**
-   * 
-   * @param slug 
-   * @param title 
-   * @param created 
-   * @param modified 
-   */
-  constructor(slug) {
-    this.slug = slug;
+  
+  constructor(resp: HttpResponse<Object>) {
+    this._resp = resp;
   }
 
   data () {
-    let pageMap = new WikiPagesPageMap(this.slug);
-    pageMap.getdata();
-    this._page = pageMap;
+    this._page = new WikiPagesPageMap(this._resp['body']);
+    
     return this._page;
   }
 
 }
 
-
-
-/**
- * 
- * 
- */
 class WikiPagesPageMap {
+  _respBody: object;
 
+  /**
+   * TODO: These two important properties are not returned from Gitlab Wiki Api.
+   */
   created: number;
   modified: number;
 
@@ -251,6 +303,8 @@ class WikiPagesPageMap {
   title: string;
 
   /**
+   * TODO: POST method will return: 
+   * response (post method) from uploading an attachment to the wiki repository:
    * 
     {
       "file_name" : "dk.png",
@@ -269,34 +323,28 @@ class WikiPagesPageMap {
   // link: Map<string, string>;
   link: {url: string; markdown: string};
 
-
   /**
-   * some variables which are not for returning pages' data.
+   * some other variables which are not for returning pages' data.
+   * such as: headers etc.
   */
 
 
-  /**
-   * 
-   * @param slug 
-   * @param title 
-   * @param created 
-   * @param modified 
-   */
-  constructor(slug, title?, created?, modified?) {
-    this.slug = slug;
-    if (title!=null) {this.title = title };
-    if (created!=null) {this.created = created };
-    if (modified!=null) {this.modified = modified };
-
+  constructor(rb: object) {
+    this._respBody = rb;
+    this.getdata();
   }
 
-  /**
-   * TODO: retrieve data from the observable (converted from promise returned by gitlab wiki api).
-   * This getadata() do NOT any actions related to remote connection, while only deal with the snaphot type of variable.
-  */ 
   getdata() {
-    let content_mocked = this.slug + this.slug;
-    this.content = content_mocked;
+    // let content_mocked = this.slug + this.slug;
+    // this.content = content_mocked;
+
+    this.slug = this._respBody['slug'];
+    this.title = this._respBody['title'];
+    this.format = this._respBody['format'];
+    this.content = this._respBody['content'];
+
+    this.created = this._respBody['created'];
+    this.modified = this._respBody['modified'];
   }
 
 }

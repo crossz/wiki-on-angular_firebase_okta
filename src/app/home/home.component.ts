@@ -2,15 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+
 // import { OktaAuthService } from '@okta/okta-angular';
 import { OktaAuthService } from '../services/okta-auth.service';
-
 
 // import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFirestore } from '../services/gwa-store.service';
 import { FirebaseOptionsToken } from '../modules/gwa-module/gwa-module.module';
-
-// import { DocumentSnapshot } from '@firebase/firestore-types';
 
 @Component({
   selector: 'app-home',
@@ -25,10 +23,7 @@ export class HomeComponent implements OnInit {
   modified: number;
 
   subs: Subscription;
-
-
   _config: any;
-
 
   constructor(private oktaAuth: OktaAuthService,
               private db: AngularFirestore,
@@ -51,10 +46,8 @@ export class HomeComponent implements OnInit {
 
   loadPage(slug) {
 
-
     console.log('----==== _config: ');
     console.log(this._config);
-
 
 
     if (this.subs) {
@@ -62,7 +55,7 @@ export class HomeComponent implements OnInit {
     }
 
     // const doc = this.db.collection('pages').doc(slug).get();
-    const doc = this.db.collection('pages').doc(slug).get();
+    const doc = this.db.collection('3224459').doc(slug).get();
 
     /**
      * in the file of @angular/fire/firestore/document/document.js:
@@ -79,16 +72,8 @@ export class HomeComponent implements OnInit {
     // };
 
 
-
-
-
-
-
-    
     this.subs = doc.subscribe((snapshot) => {
-      console.log('----==== snaphot: ' + snapshot.slug);
       const page = snapshot.data();
-      console.log('----==== page: ' + page.content);
       if (!page) {
         this.content = '### This page does not exist';
         this.slug = undefined;
@@ -97,10 +82,8 @@ export class HomeComponent implements OnInit {
         this.content = page.content;
         this.created = page.created;
         this.modified = page.modified;
-        console.log(page);
       }
     });
-
 
   }
 }

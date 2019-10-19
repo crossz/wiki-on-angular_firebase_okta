@@ -11,7 +11,7 @@ const firebaseConfig = {
   'PRIVATE-TOKEN': "zx8Z3TR3BtapdzvWG_eA"
   ,
   PRIVATETOKEN: "zx8Z3TR3BtapdzvWG_eA",
-  GITLABAPIURL: "https://gitlab.com/api/v4"
+  GITLABAPIURL: "https://gitlab.com/api/v4/projects/"
 };
 
 
