@@ -14,7 +14,6 @@ import { OktaAuthService } from './services/okta-auth.service';
 
 
 import { AngularFireModule } from '@angular/fire';
-// import { AngularFireModule } from './modules/gwa-module/gwa-module.module';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 
