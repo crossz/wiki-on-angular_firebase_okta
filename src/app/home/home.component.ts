@@ -7,8 +7,11 @@ import { Subscription } from 'rxjs';
 import { OktaAuthService } from '../services/okta-auth.service';
 
 // import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFirestore } from '../gwa/gwa-store.service';
-import { FirebaseOptionsToken } from '../gwa/gwa-store.module';
+// import { AngularFirestore } from '../gwa/gwa-store.service';
+import { AngularFirestore } from 'fire-gitlab-wiki-store';
+// import { FirebaseOptionsToken } from '../gwa/gwa-store.module';
+import { FirebaseOptionsToken } from 'fire-gitlab-wiki-store';
+
 
 @Component({
   selector: 'app-home',

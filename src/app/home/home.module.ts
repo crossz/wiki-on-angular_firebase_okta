@@ -3,8 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { HomeComponent } from './home.component';
-import { AngularFireModule } from '../gwa/gwa-store.module';
-import { AngularFirestore } from '../gwa/gwa-store.service';
+
+
+// import { AngularFireModule } from '../gwa/gwa-store.module';
+import { AngularFireModule } from 'fire-gitlab-wiki-store';
+// import { AngularFirestore } from '../gwa/gwa-store.service';
+import { AngularFirestore } from 'fire-gitlab-wiki-store';
 
 
 const firebaseConfig = {
