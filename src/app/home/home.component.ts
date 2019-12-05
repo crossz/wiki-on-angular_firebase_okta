@@ -6,9 +6,9 @@ import { Subscription } from 'rxjs';
 import { OktaAuthService } from '../services/okta-auth.service';
 
 
-// import { AngularFirestore } from '../lib/fire-gitlab-wiki-store.service'; // for dev and test purpose
+import { AngularFirestore } from '../lib/fire-gitlab-wiki-store.service'; // for dev and test purpose
 // import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFirestore } from 'fire-gitlab-wiki-store';
+// import { AngularFirestore } from 'fire-gitlab-wiki-store';
 
 
 

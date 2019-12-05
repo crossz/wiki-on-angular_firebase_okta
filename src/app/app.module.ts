@@ -20,9 +20,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 ////////////////////
 
 
-// import { AngularFireModule } from './lib/fire-gitlab-wiki-store.module'; // for dev and test purpose
+import { AngularFireModule } from './lib/fire-gitlab-wiki-store.module'; // for dev and test purpose
 // import { AngularFireModule } from '@angular/fire';
-import { AngularFireModule } from 'fire-gitlab-wiki-store';
+// import { AngularFireModule } from 'fire-gitlab-wiki-store';
 
 
 
