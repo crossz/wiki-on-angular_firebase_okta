@@ -6,9 +6,11 @@ import { Subscription } from 'rxjs';
 import { OktaAuthService } from '../services/okta-auth.service';
 
 
-// import { AngularFirestore } from '../lib/fire-gitlab-wiki-store.service'; // for dev and test purpose
+import { AngularFirestore } from '../lib/fire-gitlab-wiki-store.service'; // for dev and test purpose
+import { AppState } from '../lib/domain/state';
+import { Store } from '@ngrx/store';
 // import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFirestore } from 'fire-gitlab-wiki-store';
+// import { AngularFirestore } from 'fire-gitlab-wiki-store';
 
 
 
@@ -29,7 +31,9 @@ export class HomeComponent implements OnInit {
 
   constructor(private oktaAuth: OktaAuthService,
               private db: AngularFirestore,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private store$: Store<AppState>  
+            ) {
   }
 
   async ngOnInit() {
@@ -66,19 +70,35 @@ export class HomeComponent implements OnInit {
     //   return from(this.ref.get(options)).pipe(runInZone(this.afs.scheduler.zone));
     // };
 
+    // ## only for redux store mode:
+    
 
-    this.subs = doc.subscribe((snapshot) => {
-      const page = snapshot.data();
-      if (!page) {
-        this.content = '### This page does not exist';
-        this.slug = undefined;
-      } else {
-        this.slug = slug;
-        this.content = page.content;
-        this.created = page.created;
-        this.modified = page.modified;
-      }
+    // ## for fireStore/reduxStore mode:
+    // doc.subscribe((snapshot) => {
+      const pages$ = this.store$.select('pages'); pages$.subscribe((snapshot) => {
+        console.log(snapshot)
+
+        // ## for fireStore/reduxStore mode:
+        // const page = snapshot.data();  
+
+        // const page = snapshot[0];
+        for(let page of snapshot ){
+          
+          if (!page) {
+            // TODO: make here async, i.e. wait to display this until no response return. 
+            this.content = '### This page does not exist';
+            this.slug = undefined;
+          } else {
+            this.slug = slug;
+            this.content = page.content;
+            this.created = page.created;
+            this.modified = page.modified;
+          }
+        
+        } // for
+
+
+
     });
-
   }
 }

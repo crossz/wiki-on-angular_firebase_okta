@@ -16,14 +16,16 @@ import { HomeModule} from './home/home.module';
  * Obsolete dependencies.
  */
 // import { OktaAuthService } from './services/okta-auth.service';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+// import { AngularFirestoreModule } from '@angular/fire/firestore';
 ////////////////////
 
+import { StoreModule } from '@ngrx/store';
+import { AngularFireOptionsModule } from './lib/fire-gitlab-wiki-store-options.module';
 
-// import { AngularFireModule } from './lib/fire-gitlab-wiki-store.module'; // for dev and test purpose
+
+import { AngularFireModule } from './lib/fire-gitlab-wiki-store.module'; // for dev and test purpose
 // import { AngularFireModule } from '@angular/fire';
-import { AngularFireModule } from 'fire-gitlab-wiki-store';
-
+// import { AngularFireModule } from 'fire-gitlab-wiki-store';
 
 
 const firebaseConfig = {
@@ -57,15 +59,14 @@ const firebaseConfig = {
     MarkdownModule.forRoot(),
     HomeModule,
 
-
-    AngularFirestoreModule,
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule,
+    AngularFireOptionsModule.initializeApp(firebaseConfig)
     
 
   ],
   // this is to make these services singleton, so the variables shared between parent and children components could be persisted except refreshing the SPA. In the case of persisting during refreshing pages, localStorage etc have to be implemented.
   // providers: [OktaAuthService], 
-  providers: [], 
+  providers: [  ], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }
