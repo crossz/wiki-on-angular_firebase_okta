@@ -1,18 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { from, Observable, observable, Timestamp, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 import { FirebaseOptionsToken } from './fire-gitlab-wiki-store-options.module';
-import { FETCH_FROM_API } from './actions/page.action';
-import { PageService } from './services/page.service';
-
-import { AppState, Page } from './domain/state';
-import { WikiPagesSnapshotObservable } from './fire-gitlab-wiki-store.module';
-
-
+import { Page } from './domain/state';
 
 
 // Document.get() will yield Observable, which is converted from promise returned from gitlab wiki api.
@@ -20,7 +12,7 @@ import { WikiPagesSnapshotObservable } from './fire-gitlab-wiki-store.module';
   providedIn: 'root'
 })
 class WikiPagesDocument {
-  _snapshotObs: WikiPagesSnapshotObservable;// = new WikiPagesSnapshotObservable();
+  // _snapshotObs: WikiPagesSnapshotObservable;// = new WikiPagesSnapshotObservable();
   _privatetoken: string;
   _gitlabapiurl: string;
   _collectiionId: string;
@@ -42,12 +34,12 @@ class WikiPagesDocument {
   }
 
   setCollectiionId(collectiionId: string) {
-    this._collectiionId = collectiionId;
+    // this._collectiionId = collectiionId;
     this.service.setCollectiionId(collectiionId)
   }
 
   setSlug(slug: string) {
-    this._slug = slug;
+    // this._slug = slug;
     this.service.setSlug(slug)
   }
 
@@ -60,48 +52,8 @@ class WikiPagesDocument {
    * // const doc = this.db.collection('pages').doc(slug).get();
    */
   get(){
-    this.service.get();
-    // this._snapshotObs = this.service.get();
-
-
-    // console.log('----====----==== _privatetoken in WikiPagesDocument.get(): ' + this._privatetoken);
-    // console.log('----====----==== _collectiionId in WikiPagesDocument.get(): ' + this._collectiionId);
-    // console.log('----====----==== _slug in WikiPagesDocument.get(): ' + this._slug);
-
-    // let headers = new HttpHeaders({
-    //   'Content-type': 'application/json',      
-    //  });
-
-    // //  let rxUrl = 'https://gitlab.com/api/v4/projects/3224459/wikis/home?private_token=zx8Z3TR3BtapdzvWG_eA';
-    //  let rxUrl = this._gitlabapiurl + this._collectiionId + '/wikis/' + this._slug + '?private_token=' + this._privatetoken;
-
-    // // here the response in rx is: {format: "markdown", slug: "home", title: "home", content: "home content.↵↵## subtitle 1↵content 1.↵↵## aaa↵aaa"}
-    
-
-    // // var httpgetresp$ = this.http.get(rxUrl, {headers, observe: 'response'}) // response.body for the Wiki Pages as json.
-    // // var httpgetresp$ = this.http.get(rxUrl, {headers, responseType: 'json'}) // response for the Wiki Pages as json.
-    // //  .subscribe(resp => {console.log(resp.body);}) // for mode of {observe: 'response'}
-    // //  .subscribe(resp => {console.log(resp);}) // for mode of simplest
-  
-    // var httpgetresp$ = this.http.get<WikiPagesSnapshotMap>(rxUrl, {headers, observe: 'response'}) // response.body for the Wiki Pages as json.
-
-    // // the observable operators/operations transform Observable<Object> to WikiPagesSnapshotMap,
-    // // so that the snaphot type will work(snapshot.data() will work).
-     
-
-    // // .pipe(pluck('body'));
-    // .pipe(map(resp => {
-    //   // console.log(resp)
-    //   let _snapshotInObs = new WikiPagesSnapshotMap(resp);
-    //   return _snapshotInObs;})
-    // )
-    
-    // // httpgetresp$.subscribe(this.store$.dispatch({type: FETCH_FROM_API, playload: }))
-    
-
-    // this._snapshotObs = httpgetresp$;
-    // return this._snapshotObs;
-
+    let doc$ = this.service.get();
+    return doc$;
   }
 
 

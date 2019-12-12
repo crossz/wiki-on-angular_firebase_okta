@@ -8,17 +8,17 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { AppState, Page } from '../domain/state';
 import {
-  ADD_TODO, FETCH_FROM_API, UPDATE_COLLECTIONID_OPTS, UPDATE_OPTS, UPDATE_SLUG_OPTS,
+  ADD_TODO, FETCH_FROM_API, UPDATE_COLLECTIONID_OPTS, UPDATE_SLUG_OPTS
 } from '../actions/page.action'
 import { FirebaseOptionsToken } from '../fire-gitlab-wiki-store-options.module';
-import { WikiPagesSnapshotObservable, WikiPagesSnapshotMap } from '../fire-gitlab-wiki-store.module';
+import { WikiPagesSnapshotMap } from '../classes/WikiPages';
 
 
 
 
 @Injectable()
 export class PageService {
-  _snapshotObs: WikiPagesSnapshotObservable;// = new WikiPagesSnapshotObservable();
+  // _snapshotObs: WikiPagesSnapshotObservable;// = new WikiPagesSnapshotObservable();
   _privatetoken: string;
   _gitlabapiurl: string;
   _collectiionId: string;
@@ -59,21 +59,7 @@ export class PageService {
   }
 
 
-
-
-// For 在开始时就能加载到数据进入 store, 需要在下面的模块中的 constructor() 中去
-// 下面这段应该放到 component.ts 中, 在这即 fire-gitlab-wiki-store.service.ts 文件中去
-
-
-/**
-  const fetchData$ = this.service.getTodos()
-  .flatMap(todos => {
-    this.store$.dispatch({type: FETCH_FROM_API, payload: todos});
-    return this.store$.select('todos')
-  })
-  .startWith([]);
- */
-
+  // GET and RETURN doc$ to the component.ts
   get(collectiionId: string, slug: string){
     // 获取 gitlab rx url parameter: project/collection id + slug
     const opts$ = this.store$.select('opts'); 
@@ -83,12 +69,9 @@ export class PageService {
     })
 
 
-
     console.log('####----====----==== _privatetoken in WikiPagesDocument.get(): ' + this._privatetoken);
     console.log('####----====----==== _collectiionId in WikiPagesDocument.get(): ' + this._collectiionId);
     console.log('####----====----==== _slug in WikiPagesDocument.get(): ' + this._slug);
-    // console.log('####----====----==== rxUrl in WikiPagesDocument.get(): ' + rxUrl);
-
 
 
     let headers = this.headers;
@@ -104,24 +87,18 @@ export class PageService {
     //  .subscribe(resp => {console.log(resp.body);}) // for mode of {observe: 'response'}
     //  .subscribe(resp => {console.log(resp);}) // for mode of simplest
   
-    var httpgetresp$ = this.http.get<WikiPagesSnapshotMap>(rxUrl, {headers, observe: 'response'}) // response.body for the Wiki Pages as json.
-
-    // the observable operators/operations transform Observable<Object> to WikiPagesSnapshotMap,
-    // so that the snaphot type will work(snapshot.data() will work).
-     
-
-    // // .pipe(pluck('body'));
-    // .pipe(map(resp => {
-    //   // console.log(resp)
-    //   let _snapshotInObs = new WikiPagesSnapshotMap(resp);
-    //   return _snapshotInObs;})
-    // )
-    
-    // return httpgetresp$;
-
+    // response.body for the Wiki Pages as json.
+    this.http.get<WikiPagesSnapshotMap>(rxUrl, {headers, observe: 'response'})
     .subscribe(resp => {
       this.store$.dispatch({type: FETCH_FROM_API, payload: [resp.body]});
     });
+    // .subscribe(
+    //   resp => {
+    //     this.store$.dispatch({type: FETCH_FROM_API, payload: new WikiPagesSnapshotMap(resp)});
+    //   });
+     
+    let pages$ = this.store$.select('pages');
+    return pages$;
 
   }
 
@@ -134,5 +111,3 @@ export class PageService {
   }
 
 }
-
-

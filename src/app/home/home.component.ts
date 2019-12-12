@@ -70,20 +70,15 @@ export class HomeComponent implements OnInit {
     //   return from(this.ref.get(options)).pipe(runInZone(this.afs.scheduler.zone));
     // };
 
-    // ## only for redux store mode:
-    
 
-    // ## for fireStore/reduxStore mode:
-    // doc.subscribe((snapshot) => {
-      const pages$ = this.store$.select('pages'); pages$.subscribe((snapshot) => {
+      doc.subscribe((snapshot) => {
         console.log(snapshot)
+  
+        const page = snapshot[0]
+        // for(let page of snapshot ){
+          // const page = snapshot.data();  
+        
 
-        // ## for fireStore/reduxStore mode:
-        // const page = snapshot.data();  
-
-        // const page = snapshot[0];
-        for(let page of snapshot ){
-          
           if (!page) {
             // TODO: make here async, i.e. wait to display this until no response return. 
             this.content = '### This page does not exist';
@@ -95,7 +90,7 @@ export class HomeComponent implements OnInit {
             this.modified = page.modified;
           }
         
-        } // for
+        // } // for
 
 
 
