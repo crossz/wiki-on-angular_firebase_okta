@@ -54,6 +54,7 @@ class WikiPagesDocument {
   get(){
     this.service.get();
     let pages$ = this.store$.select('pages');
+    // let pages$ = this.store$.select('snapshot');
     return pages$;
   }
 

@@ -20,12 +20,13 @@ export function pageReducer (state: Page[] = [], action: CustomAction) {
 }
 
 
-export function snapshotReducer (state: Snapshot[] = [], action: CustomAction) {
+export function snapshotReducer (state: Snapshot = {'resp': null, 'pagebody': null}, action: CustomAction) {
   switch (action.type) {
     case FETCH_FROM_SNAPSHOT:
-      return [
-        ...action.payload
-      ];
+      state.resp = action.payload
+      state.pagebody = action.payload.data();
+      console.log(state)
+      return state;
     default:
       return state;
   }

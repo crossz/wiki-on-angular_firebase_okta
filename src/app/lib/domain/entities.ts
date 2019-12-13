@@ -46,5 +46,5 @@ export class Opts {
 
 export class Snapshot {
   resp: HttpResponse<Object>;
-  page: WikiPagesPageMap;
+  pagebody: Object;
 }

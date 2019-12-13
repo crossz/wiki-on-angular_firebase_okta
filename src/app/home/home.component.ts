@@ -76,23 +76,22 @@ export class HomeComponent implements OnInit {
         console.log(snapshot);
   
 
-
         const page = snapshot[0]
-        console.log(page)
+        
         // const page = snapshot
         // const page = snapshot.data();
         
         // for(let page of snapshot ){
           // const page = snapshot.data();
-        
+
+          console.log(' ---- page --- ');
+          console.log(page)
 
           if (!page) {
             // TODO: make here async, i.e. wait to display this until no response return. 
             this.content = '### This page does not exist';
             this.slug = undefined;
           } else {
-            const page1 = page;
-
             this.slug = slug;
             this.content = page.content;
             this.created = page.created;

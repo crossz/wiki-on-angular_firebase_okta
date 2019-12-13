@@ -93,7 +93,7 @@ export class PageService {
       this.store$.dispatch({type: FETCH_FROM_API, payload: [resp.body]});
     });
     // .subscribe(
-    //   resp => {this.store$.dispatch({type: FETCH_FROM_SNAPSHOT, payload: [new WikiPagesSnapshotMap(resp)]});
+    //   resp => {this.store$.dispatch({type: FETCH_FROM_SNAPSHOT, payload: resp});
     // });
 
   }

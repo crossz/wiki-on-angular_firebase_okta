@@ -5,5 +5,5 @@ export { Page, Opts }
 export interface AppState{
     pages: Page[];
     opts: Opts;
-    snapshot: Snapshot[];
+    snapshot: Snapshot;
 }
