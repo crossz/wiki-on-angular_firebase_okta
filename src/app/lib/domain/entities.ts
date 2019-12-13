@@ -43,7 +43,3 @@ export class Opts {
   projectId: string;
   slug: string;
 }
-
-// export class Snapshot1 {
-//   pagebody: WikiPagesSnapshotMap;
-// }

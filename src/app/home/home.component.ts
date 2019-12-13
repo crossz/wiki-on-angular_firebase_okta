@@ -75,34 +75,21 @@ export class HomeComponent implements OnInit {
         console.log(' ---- snapshot --- ');
         console.log(snapshot);
   
+        if (snapshot) {
+        // const page = snapshot[0]
+        const page = snapshot.data();
 
-      
-
-        // // const page = snapshot[0]
-        // // const page = snapshot
-        // const page = snapshot.data();
-        
-        // // for(let page of snapshot ){
-        //   // const page = snapshot.data();
-
-        //   console.log(' ---- page --- ');
-        //   console.log(page)
-
-        //   if (!page) {
-        //     // TODO: make here async, i.e. wait to display this until no response return. 
-        //     this.content = '### This page does not exist';
-        //     this.slug = undefined;
-        //   } else {
-        //     this.slug = slug;
-        //     this.content = page.content;
-        //     this.created = page.created;
-        //     this.modified = page.modified;
-        //   }
-        
-        // // } // for
-
-
-
+          if (!page) {
+            // TODO: make here async, i.e. wait to display this until no response return. 
+            this.content = '### This page does not exist';
+            this.slug = undefined;
+          } else {
+            this.slug = slug;
+            this.content = page.content;
+            this.created = page.created;
+            this.modified = page.modified;
+          }
+        }
     });
   }
 }
