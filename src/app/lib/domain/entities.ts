@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { WikiPagesPageMap } from '../classes/WikiPages';
+import { WikiPagesPageMap, WikiPagesSnapshotMap } from '../classes/WikiPages';
 
 export class Page {
   // TODO: These two important properties are not returned from Gitlab Wiki Api.
@@ -44,7 +44,6 @@ export class Opts {
   slug: string;
 }
 
-export class Snapshot {
-  resp: HttpResponse<Object>;
-  pagebody: Object;
-}
+// export class Snapshot1 {
+//   pagebody: WikiPagesSnapshotMap;
+// }

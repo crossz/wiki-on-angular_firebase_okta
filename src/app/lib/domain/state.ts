@@ -1,9 +1,10 @@
-import { Page, Opts, Snapshot } from './entities';
+import { Page, Opts } from './entities';
+import { WikiPagesSnapshotMap } from '../classes/WikiPages';
 
 export { Page, Opts }
 
 export interface AppState{
-    pages: Page[];
-    opts: Opts;
-    snapshot: Snapshot;
+    pagesState: Page[];
+    optsState: Opts;
+    snapshotState: WikiPagesSnapshotMap;
 }

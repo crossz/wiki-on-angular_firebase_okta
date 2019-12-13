@@ -59,10 +59,22 @@ export class PageService {
   }
 
 
+
+  setCollectiionId(collectiionId: string) {
+    this.store$.dispatch({type: UPDATE_COLLECTIONID_OPTS, payload: collectiionId});
+  }
+
+  setSlug(slug: string) {
+    this.store$.dispatch({type: UPDATE_SLUG_OPTS, payload: slug});
+  }
+
+
+
+
   // GET and RETURN doc$ to the component.ts
   get(collectiionId: string, slug: string){
     // 获取 gitlab rx url parameter: project/collection id + slug
-    const opts$ = this.store$.select('opts'); 
+    const opts$ = this.store$.select('optsState'); 
     opts$.subscribe((snapshot) => {
       this._collectiionId = snapshot.projectId;
       this._slug = snapshot.slug;
@@ -90,20 +102,11 @@ export class PageService {
     // response.body for the Wiki Pages as json.
     this.http.get<WikiPagesSnapshotMap>(rxUrl, {headers, observe: 'response'})
     .subscribe(resp => {
-      this.store$.dispatch({type: FETCH_FROM_API, payload: [resp.body]});
+      // this.store$.dispatch({type: FETCH_FROM_API, payload: [resp.body]});
+      this.store$.dispatch({type: FETCH_FROM_SNAPSHOT, payload: resp});
     });
-    // .subscribe(
-    //   resp => {this.store$.dispatch({type: FETCH_FROM_SNAPSHOT, payload: resp});
-    // });
 
   }
 
-  setCollectiionId(collectiionId: string) {
-    this.store$.dispatch({type: UPDATE_COLLECTIONID_OPTS, payload: collectiionId});
-  }
-
-  setSlug(slug: string) {
-    this.store$.dispatch({type: UPDATE_SLUG_OPTS, payload: slug});
-  }
 
 }

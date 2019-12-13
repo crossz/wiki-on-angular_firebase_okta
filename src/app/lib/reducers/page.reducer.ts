@@ -1,4 +1,4 @@
-import { Page, Opts, Snapshot } from '../domain/entities';
+import { Page, Opts } from '../domain/entities';
 import { 
   ADD_TODO, 
   FETCH_FROM_API,
@@ -7,6 +7,7 @@ import {
   FETCH_FROM_SNAPSHOT
 } from '../actions/page.action';
 import { CustomAction } from '../actions/page.customaction';
+import { WikiPagesSnapshotMap } from '../classes/WikiPages';
 
 export function pageReducer (state: Page[] = [], action: CustomAction) {
   switch (action.type) {
@@ -20,12 +21,11 @@ export function pageReducer (state: Page[] = [], action: CustomAction) {
 }
 
 
-export function snapshotReducer (state: Snapshot = {'resp': null, 'pagebody': null}, action: CustomAction) {
+export function snapshotReducer (state: WikiPagesSnapshotMap = null, action: CustomAction) {
   switch (action.type) {
     case FETCH_FROM_SNAPSHOT:
-      state.resp = action.payload
-      state.pagebody = action.payload.data();
-      console.log(state)
+      state = new WikiPagesSnapshotMap(action.payload);
+      // console.log(state)
       return state;
     default:
       return state;

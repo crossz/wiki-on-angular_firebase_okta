@@ -53,8 +53,8 @@ class WikiPagesDocument {
    */
   get(){
     this.service.get();
-    let pages$ = this.store$.select('pages');
-    // let pages$ = this.store$.select('snapshot');
+    // let pages$ = this.store$.select('pages');
+    let pages$ = this.store$.select('snapshotState');
     return pages$;
   }
 

@@ -9,9 +9,9 @@ import { pageReducer, optsReducer, snapshotReducer } from './reducers/page.reduc
   imports: [
     CommonModule,
     StoreModule.forRoot({
-      snapshots: snapshotReducer,
-      pages: pageReducer,
-      opts: optsReducer
+      snapshotState: snapshotReducer,
+      pagesState: pageReducer,
+      optsState: optsReducer
     }),
   ],
   providers: [
