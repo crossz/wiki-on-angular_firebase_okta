@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { FirebaseOptionsToken } from './fire-gitlab-wiki-store-options.module';
-import { Page } from './domain/state';
+import { Page, AppState } from './domain/state';
 
 
 // Document.get() will yield Observable, which is converted from promise returned from gitlab wiki api.
@@ -20,7 +20,7 @@ class WikiPagesDocument {
   rxUrl: string;
 
   constructor(private http: HttpClient,
-      private store$: Store<Page>,
+      private store$: Store<AppState>,
       @Inject('pageService') private service
     ) {
   }
@@ -52,8 +52,9 @@ class WikiPagesDocument {
    * // const doc = this.db.collection('pages').doc(slug).get();
    */
   get(){
-    let doc$ = this.service.get();
-    return doc$;
+    this.service.get();
+    let pages$ = this.store$.select('pages');
+    return pages$;
   }
 
 

@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { AppState, Page } from '../domain/state';
 import {
-  ADD_TODO, FETCH_FROM_API, UPDATE_COLLECTIONID_OPTS, UPDATE_SLUG_OPTS
+  ADD_TODO, FETCH_FROM_API, UPDATE_COLLECTIONID_OPTS, UPDATE_SLUG_OPTS, FETCH_FROM_SNAPSHOT
 } from '../actions/page.action'
 import { FirebaseOptionsToken } from '../fire-gitlab-wiki-store-options.module';
 import { WikiPagesSnapshotMap } from '../classes/WikiPages';
@@ -93,12 +93,8 @@ export class PageService {
       this.store$.dispatch({type: FETCH_FROM_API, payload: [resp.body]});
     });
     // .subscribe(
-    //   resp => {
-    //     this.store$.dispatch({type: FETCH_FROM_API, payload: new WikiPagesSnapshotMap(resp)});
-    //   });
-     
-    let pages$ = this.store$.select('pages');
-    return pages$;
+    //   resp => {this.store$.dispatch({type: FETCH_FROM_SNAPSHOT, payload: [new WikiPagesSnapshotMap(resp)]});
+    // });
 
   }
 

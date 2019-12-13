@@ -72,11 +72,18 @@ export class HomeComponent implements OnInit {
 
 
       doc.subscribe((snapshot) => {
-        console.log(snapshot)
+        console.log(' ---- snapshot --- ');
+        console.log(snapshot);
   
+
+
         const page = snapshot[0]
+        console.log(page)
+        // const page = snapshot
+        // const page = snapshot.data();
+        
         // for(let page of snapshot ){
-          // const page = snapshot.data();  
+          // const page = snapshot.data();
         
 
           if (!page) {
@@ -84,6 +91,8 @@ export class HomeComponent implements OnInit {
             this.content = '### This page does not exist';
             this.slug = undefined;
           } else {
+            const page1 = page;
+
             this.slug = slug;
             this.content = page.content;
             this.created = page.created;
