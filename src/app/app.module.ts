@@ -16,15 +16,11 @@ import { HomeModule} from './home/home.module';
  * Obsolete dependencies.
  */
 // import { OktaAuthService } from './services/okta-auth.service';
-// import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule } from '@angular/fire/firestore'; // Keep this to be compatible for firebase's firestore switch.
 ////////////////////
 
-import { StoreModule } from '@ngrx/store';
-import { AngularFireOptionsModule } from './lib/fire-gitlab-wiki-store-options.module';
-
-
-import { AngularFireModule } from './lib/fire-gitlab-wiki-store.module'; // for dev and test purpose
-// import { AngularFireModule } from '@angular/fire';
+// import { AngularFireModule } from './lib/fire-gitlab-wiki-store.module'; // for dev and test purpose
+import { AngularFireModule } from '@angular/fire';
 // import { AngularFireModule } from 'fire-gitlab-wiki-store';
 
 
@@ -59,8 +55,9 @@ const firebaseConfig = {
     MarkdownModule.forRoot(),
     HomeModule,
 
+    AngularFirestoreModule,
     AngularFireModule,
-    AngularFireOptionsModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig)
     
 
   ],

@@ -4,7 +4,9 @@ import {
   FETCH_FROM_API,
   UPDATE_COLLECTIONID_OPTS,
   UPDATE_SLUG_OPTS,
-  FETCH_FROM_SNAPSHOT
+  FETCH_FROM_SNAPSHOT,
+  UPDATE_GITLABAPIURL_OPTS,
+  UPDATE_PRIVATETOKEN_OPTS
 } from '../actions/page.action';
 import { CustomAction } from '../actions/page.customaction';
 import { WikiPagesSnapshotMap } from '../classes/WikiPages';
@@ -33,13 +35,19 @@ export function snapshotReducer (state: WikiPagesSnapshotMap = null, action: Cus
 }
 
 
-export function optsReducer (state: Opts = {'projectId': '', 'slug': ''}, action: CustomAction) {
+export function optsReducer (state: Opts = {'projectId': '', 'slug': '', 'gitlabapiurl': '', 'privatetoken': ''}, action: CustomAction) {
   switch (action.type) {
     case UPDATE_COLLECTIONID_OPTS:
         state.projectId = action.payload
       return state
     case UPDATE_SLUG_OPTS:
       state.slug = action.payload
+      return state
+    case UPDATE_GITLABAPIURL_OPTS:
+      state.gitlabapiurl = action.payload
+      return state
+    case UPDATE_PRIVATETOKEN_OPTS:
+      state.privatetoken = action.payload
       return state
     default:
       return state;

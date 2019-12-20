@@ -3,7 +3,7 @@ import { from, Observable, observable, Timestamp, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
-import { FirebaseOptionsToken } from './fire-gitlab-wiki-store-options.module';
+import { FirebaseOptionsToken } from './fire-gitlab-wiki-store.module';
 import { Page, AppState } from './domain/state';
 
 
@@ -25,12 +25,15 @@ class WikiPagesDocument {
     ) {
   }
 
-  setPrivateToken(privateToken: string) {
-    this._privatetoken = privateToken;
-  }
 
   setGitlabApiUrl(gitlabApiUrl: string) {
-    this._gitlabapiurl = gitlabApiUrl;
+    // this._gitlabapiurl = gitlabApiUrl;
+    this.service.setGitlabapiurl(gitlabApiUrl)
+  }
+
+  setPrivateToken(privateToken: string) {
+    // this._privatetoken = privateToken;
+    this.service.setPrivatetoken(privateToken)
   }
 
   setCollectiionId(collectiionId: string) {
@@ -42,6 +45,7 @@ class WikiPagesDocument {
     // this._slug = slug;
     this.service.setSlug(slug)
   }
+
 
 
   /**

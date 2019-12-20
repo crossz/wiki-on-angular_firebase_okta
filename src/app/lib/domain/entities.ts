@@ -42,4 +42,6 @@ export class Page {
 export class Opts {
   projectId: string;
   slug: string;
+  gitlabapiurl: string;
+  privatetoken: string;
 }

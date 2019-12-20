@@ -5,13 +5,9 @@ import { Subscription } from 'rxjs';
 // import { OktaAuthService } from '@okta/okta-angular';
 import { OktaAuthService } from '../services/okta-auth.service';
 
-
-import { AngularFirestore } from '../lib/fire-gitlab-wiki-store.service'; // for dev and test purpose
-import { AppState } from '../lib/domain/state';
-import { Store } from '@ngrx/store';
-// import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 // import { AngularFirestore } from 'fire-gitlab-wiki-store';
-
+// import { AngularFirestore } from '../lib/fire-gitlab-wiki-store.service'; // for dev and test purpose
 
 
 @Component({
@@ -31,8 +27,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private oktaAuth: OktaAuthService,
               private db: AngularFirestore,
-              private route: ActivatedRoute,
-              private store$: Store<AppState>  
+              private route: ActivatedRoute
             ) {
   }
 
@@ -53,8 +48,8 @@ export class HomeComponent implements OnInit {
       this.subs.unsubscribe();
     }
 
-    // const doc = this.db.collection('pages').doc(slug).get();
-    const doc = this.db.collection('3224459').doc(slug).get();
+    const doc = this.db.collection('pages').doc(slug).get();
+    // const doc = this.db.collection('3224459').doc(slug).get();
 
     /**
      * in the file of @angular/fire/firestore/document/document.js:

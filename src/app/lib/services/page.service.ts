@@ -8,9 +8,9 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { AppState, Page } from '../domain/state';
 import {
-  ADD_TODO, FETCH_FROM_API, UPDATE_COLLECTIONID_OPTS, UPDATE_SLUG_OPTS, FETCH_FROM_SNAPSHOT
+  ADD_TODO, FETCH_FROM_API, UPDATE_COLLECTIONID_OPTS, UPDATE_SLUG_OPTS, FETCH_FROM_SNAPSHOT, UPDATE_GITLABAPIURL_OPTS, UPDATE_PRIVATETOKEN_OPTS
 } from '../actions/page.action'
-import { FirebaseOptionsToken } from '../fire-gitlab-wiki-store-options.module';
+// import { FirebaseOptionsToken } from '../fire-gitlab-wiki-store.module';
 import { WikiPagesSnapshotMap } from '../classes/WikiPages';
 
 
@@ -27,36 +27,36 @@ export class PageService {
   headers = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(
-    @Inject(FirebaseOptionsToken) fbConfig: any,
+    // @Inject(FirebaseOptionsToken) fbConfig: any,
     private http: HttpClient, 
     private store$: Store<AppState>
     ) {
-      this._gitlabapiurl = fbConfig.GITLABAPIURL;
-      this._privatetoken = fbConfig.PRIVATETOKEN;
+      // this._gitlabapiurl = fbConfig.GITLABAPIURL;
+      // this._privatetoken = fbConfig.PRIVATETOKEN;
       this._collectiionId = '';
       this._slug =  '';
   }
 
-  // POST /todos
-  addTodo(desc:string): void{
-    let api_url = 'http://localhost:3000/todos';
+  // // POST /todos
+  // addTodo(desc:string): void{
+  //   let api_url = 'http://localhost:3000/todos';
 
-    let todoToAdd = {
-      id: Number,
-      desc: desc,
-      completed: false
-    };
-    this.http
-      .post(api_url, JSON.stringify(todoToAdd), {headers: this.headers})
-      .subscribe(todo => {
-        this.store$.dispatch({type: ADD_TODO, payload: todo});
-      });
-  }
-  // GET /todos
-  getTodos(): Observable<Page[]> {
-    let api_url = 'http://localhost:3000/todos';
-    return this.http.get<any>(`${api_url}`);
-  }
+  //   let todoToAdd = {
+  //     id: Number,
+  //     desc: desc,
+  //     completed: false
+  //   };
+  //   this.http
+  //     .post(api_url, JSON.stringify(todoToAdd), {headers: this.headers})
+  //     .subscribe(todo => {
+  //       this.store$.dispatch({type: ADD_TODO, payload: todo});
+  //     });
+  // }
+  // // GET /todos
+  // getTodos(): Observable<Page[]> {
+  //   let api_url = 'http://localhost:3000/todos';
+  //   return this.http.get<any>(`${api_url}`);
+  // }
 
 
 
@@ -68,6 +68,13 @@ export class PageService {
     this.store$.dispatch({type: UPDATE_SLUG_OPTS, payload: slug});
   }
 
+  setGitlabapiurl(gitlabapiurl: string) {
+    this.store$.dispatch({type: UPDATE_GITLABAPIURL_OPTS, payload: gitlabapiurl});
+  }
+
+  setPrivatetoken(privatetoken: string) {
+    this.store$.dispatch({type: UPDATE_PRIVATETOKEN_OPTS, payload: privatetoken});
+  }
 
 
 
@@ -78,6 +85,8 @@ export class PageService {
     opts$.subscribe((snapshot) => {
       this._collectiionId = snapshot.projectId;
       this._slug = snapshot.slug;
+      this._gitlabapiurl = snapshot.gitlabapiurl;
+      this._privatetoken = snapshot.privatetoken;
     })
 
 
